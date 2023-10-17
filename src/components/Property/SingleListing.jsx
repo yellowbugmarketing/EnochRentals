@@ -12,19 +12,39 @@ const SingleListing = () => {
   const [property, setProperty] = useState(null);
   const { propertyId } = useParams();
   console.log(propertyId);
+
+  // useEffect(() => {
+  //   if (propertyId) fetchData();
+  // }, []);
+  
+  // async function fetchData() {
+  //   const docRef = doc(db, "properties", propertyId);
+  //   const docSnap = await getDoc(docRef);
+  //   if (docSnap.exists()) {
+  //     console.log("Document data:", docSnap.data());
+  //     setProperty(docSnap.data());
+  //   } else {
+  //     console.log("No such document!");
+  //   }
+  // }
+
   useEffect(() => {
-    if (propertyId) fetchData();
-  }, []);
-  async function fetchData() {
-    const docRef = doc(db, "properties", propertyId);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-      setProperty(docSnap.data());
-    } else {
-      console.log("No such document!");
+    async function fetchData() {
+      const docRef = doc(db, "properties", propertyId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+        setProperty(docSnap.data());
+      } else {
+        console.log("No such document!");
+      }
     }
-  }
+
+    if (propertyId) {
+      fetchData();
+    }
+  }, [propertyId]);
+
   if (!property) return "";
   return (
     <div className="max-w-screen-xl mx-auto  p-8">

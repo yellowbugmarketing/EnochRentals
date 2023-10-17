@@ -11,26 +11,51 @@ const OnlineHeader = () => {
   const { application, setApplication } = useContext(ApplyOnlineContext);
   const { listingId } = useParams();
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (listingId && application?.id !== listingId) {
+  //     // console.log("inide fetch");
+  //     fetchData();
+  //   } else if (!listingId && !application) {
+  //     navigate("/properties");
+  //   }
+  // }, []);
+
+  // async function fetchData() {
+  //   const docRef = doc(db, "properties", listingId);
+  //   const docSnap = await getDoc(docRef);
+  //   if (docSnap.exists()) {
+  //     console.log("Document data:", docSnap.data());
+  //     localStorage.setItem("application", JSON.stringify(docSnap.data()));
+  //     setApplication(docSnap.data());
+  //   } else {
+  //     console.log("No such document!");
+  //     navigate("/properties");
+  //   }
+  // }
+
   useEffect(() => {
+    async function fetchData() {
+      const docRef = doc(db, "properties", listingId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+        localStorage.setItem("application", JSON.stringify(docSnap.data()));
+        setApplication(docSnap.data());
+      } else {
+        console.log("No such document!");
+        navigate("/properties");
+      }
+    }
+
     if (listingId && application?.id !== listingId) {
-      // console.log("inide fetch");
       fetchData();
-    } else if (!listingId && !application) {
+    } else if (!listingId && !application) { 
       navigate("/properties");
     }
-  }, []);
-  async function fetchData() {
-    const docRef = doc(db, "properties", listingId);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-      localStorage.setItem("application", JSON.stringify(docSnap.data()));
-      setApplication(docSnap.data());
-    } else {
-      console.log("No such document!");
-      navigate("/properties");
-    }
-  }
+  }, [application, listingId, navigate, setApplication]);
+
+
   return (
     <div className="my-6 px-4 border-b-2">
       <h1 className="text-4xl text-blue-600">Rental Application</h1>

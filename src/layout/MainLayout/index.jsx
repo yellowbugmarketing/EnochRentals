@@ -3,8 +3,14 @@ import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {
   const [toggle, setToggle] = useState(false);
+  
+  const containerRef = useRef(null); // move this up 
+  
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    // added this
+  const currentContainer = containerRef.current; // capture the current value
+
+  const observer = new IntersectionObserver(
       (entries) => {
         let [entry] = entries;
         console.log(entry.isIntersecting);
@@ -20,13 +26,15 @@ const MainLayout = () => {
         threshold: 1.0,
       }
     );
-    if (containerRef.current) observer.observe(containerRef.current);
+      if (currentContainer) observer.observe(currentContainer); 
+    // if (containerRef.current) observer.observe(containerRef.current);
     return () => {
-      if (containerRef.current) observer.unobserve(containerRef.current);
+      if (currentContainer) observer.unobserve(currentContainer);
+    // if (containerRef.current) observer.unobserve(containerRef.current);
     };
   }, []);
-
-  const containerRef = useRef(null);
+  
+  // const containerRef = useRef(null); // move this up 
 
   return (
     <>

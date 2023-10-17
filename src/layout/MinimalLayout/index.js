@@ -11,11 +11,18 @@ import { AuthContext } from "../../context/AuthContext";
 const MinimalLayout = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (!isAuthenticated) {
+  //     navigate("/");
+  //   }
+  // }, []);
+
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/");
     }
-  }, []);
+  }, [isAuthenticated, navigate]);
 
   return <>{children}</>;
 };
